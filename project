@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+module Projet
+  def self.require_files *files
+    files.each do |file|
+      require File.expand_path(
+        File.join(__FILE__, "..", file)
+      )
+    end
+  end
+end
+
+Projet.require_files "command", "datas"
+
+arr = Datas.load
+
+options = Command.get_options
+arr = Datas.filtre_ville(arr, options[:ville])
+arr = Datas.filtre_injury(arr, options[:injury])
+
+nb_crash = arr.count
+
+puts "Il y a eu #{nb_crash} accidents #{options[:ville] ? "à #{options[:ville]}" : ""}"
+
