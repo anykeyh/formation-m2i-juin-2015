@@ -1,40 +1,47 @@
+Projet.require_files "accident"
+
 module Datas
   def self.load
     data = File.read "data.csv"
 
     rows = data.split("\n")
 
-    $headers = rows.first.split(",")
+    @headers = rows.first.split(",").map(&:downcase)
 
     arr = rows[1..-1].map{|x| x.split(",") }.map do |x|
-      creer_hash(x)
+      creer_accident(x)
     end
 
     arr
   end
 
-  def self.creer_hash data
-    hash = {}
-
-    data.each_with_index do |x, idx|
-      hash[$headers[idx]] = x
-    end
-
-    return hash
+  def self.headers
+    @headers
   end
 
+  def self.creer_accident data
+    a = Accident.new
+
+    @headers.each_with_index do |header, idx|
+      if a.respond_to? "#{header}="
+        a.send "#{header}=", data[idx]
+      end
+    end
+
+    return a
+  end
 
   def self.filtre_ville arr, ville
     if ville.nil?
       arr
     else
-      arr.select{|x| x["COUNTY_NAME"]==ville }
+      arr.select{|x|  x.county_name==ville }
     end
   end
 
   def self.filtre_injury arr, filtrer
     if filtrer
-      arr.select{|x| x["INJURY"]=="YES" }
+      arr.select{|x| x.injury=="YES" }
     else
       arr
     end
