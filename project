@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
 
+require 'bundler'
+require 'sinatra/base'
+
+Bundler.require
+
 module Projet
   def self.require_files *files
     files.each do |file|
@@ -12,16 +17,19 @@ module Projet
   def self.run!
     Projet.require_files "command", "datas"
 
-    arr = Datas.load
+    Server.run!
 
-    options = Command.get_options
-    arr = Datas.filtre_ville(arr, options[:ville])
-    arr = Datas.filtre_injury(arr, options[:injury])
+    #arr = Datas.load
 
-    nb_crash = arr.count
+    #options = Command.get_options
+    #arr = Datas.filtre_ville(arr, options[:ville])
+    #arr = Datas.filtre_injury(arr, options[:injury])
 
-    puts "Il y a eu #{nb_crash} accidents #{options[:ville] ? "à #{options[:ville]}" : ""}"
+    #nb_crash = arr.count
+
+    #puts "Il y a eu #{nb_crash} accidents #{options[:ville] ? "à #{options[:ville]}" : ""}"
   end
 end
 
+Projet.require_files "server"
 Projet.run!
