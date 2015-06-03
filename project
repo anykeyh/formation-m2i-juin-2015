@@ -31,5 +31,5 @@ module Projet
   end
 end
 
-Projet.require_files "server"
+Projet.require_files "server", "controllers/index_controller"
 Projet.run!

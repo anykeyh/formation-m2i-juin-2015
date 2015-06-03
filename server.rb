@@ -1,5 +1,5 @@
 class Server < Sinatra::Base
-  self.get("/") do
-    "hello world"
+  get "/" do
+    IndexController.new.index
   end
 end
