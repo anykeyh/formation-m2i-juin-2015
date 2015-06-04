@@ -1,13 +1,16 @@
-Projet.require_files "helpers/html_helper"
+Projet.require_files "controllers/controller"
 
-class IndexController
-  include HtmlHelper
-
-  def initialize
-    @accidents = Datas.load
+class IndexController < Controller
+  def index
+    @accidents = Datas.load[0..100]
+    @cities = @accidents.map(&:county_name).compact.uniq.sort
   end
 
-  def index
-    ERB.new(File.read "./views/index.html.erb").result(binding)
+  def search
+    value = params[:county]
+
+    index
+    @accidents = @accidents.select{|acc| acc.county_name == value }
+    render :index, :index
   end
 end

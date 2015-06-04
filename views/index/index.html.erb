@@ -4,6 +4,17 @@
   <title>Afficher mes accidents</title>
 </head>
 <body>
+  <div>
+    <%= html_form :action => "/search" do
+      html_div do
+        html_label "Ville", :for => "county"
+        html_select(@cities, name: "county")
+      end
+
+      html_submit("ok")
+    end %>
+  </div>
+
   <%
         fields = [:case_number, 
     :barrack, :acc_date,  :acc_time, 
@@ -18,6 +29,8 @@
     :prop_dest, 
     :injury, :collision_with_1, :collision_with_2]
       %>
+
   <%= html_table @accidents[0..1000], fields %>
+
 </body>
 </html>
